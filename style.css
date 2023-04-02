@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.top-container{
+    background-color: #E3DFFD;
+    padding-bottom: 120px;
+}
+
+.middle-container{
+    background-color: #9DC08B;
+    padding-bottom: 90px;
+}
+
+.bottom-container{
+    background-color: #9E4784;
+    padding: 40px 0px;
+}
+
+body{
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+#cloud1{
+    position: absolute;
+    right: 150px;
+    top: 50px;
+}
+
+#cloud2{
+    position: absolute;
+    top: 240px;
+    left: 100px;
+}
+
+#mountain{
+    position: relative;
+    top: 120px;
+    height: 250px;
+    width: 400px;
+}
+
+.aboutme{
+    position: relative;
+    top: 100px;
+}
+
+.aboutme h1{
+    font-size: 80px;
+    font-family: 'Sacramento', cursive;
+}
+
+span{
+    text-decoration: underline;
+}
+
+#profilepic{
+    height: 120px;
+    padding:60px 0px 0px 0px;
+}
+
+.desc{
+    width: 40%;
+    margin: auto;
+}
+
+
+.first-skill img{
+    height: 100px;
+    float: left;
+}
+
+.skills p{
+    font-size: 15px;
+    text-align: justify;
+    margin: 0px 150px 0px 150px;
+    padding-bottom: 20px;
+}
+
+.first-skill{
+    width: 600px;
+    margin: 40px auto;
+}
+
+.sec-skill{
+    width: 600px;
+    margin: auto;
+}
+
+.sec-skill img{
+    float: right;
+    height: 100px;
+    width: 120px;
+}
+
+.bottom-container a{
+    text-decoration: none;
+}
+
+.bottom-container p{
+    margin-top: 20px;
+}
+.footer-link{
+    margin: 0px 20px;
+}
+
+.middle-container h1{
+    margin: 20px;
+    color: #2F58CD;
+}
+
+.skills h1{
+    margin-top: 100px;
+}
+
+.contact{
+    margin-top: 100px;
+}
+
+.contact p{
+    margin: 40px 0px;
+}
+.contact-link{
+    text-decoration: none;
+    padding: 5px 8px;
+    background-color: #185ea0fd;
+    border-radius: 8px;
+    color: #E3DFFD;
+}
+
+.contact-link:hover{
+    background-color: #1848affd
+}
+
+#ph1{
+    color: #2F58CD;
+    font-weight: bold;
+    font-size: 19px;
+}
+
+#ph2{
+    color: #2F58CD;
+    font-weight: bold;
+    font-size: 19px;
+}
