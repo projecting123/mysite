@@ -16,7 +16,7 @@ This branch of repository contains all the source files, which are used to build
 
 
 ## 🚀 About Me
-I'm a full stack developer...and I am taking the full course in UJUCODE CODING SCHOOL- Baihata Chariali, PIN: 781366
+I'm a full stack developer...and I am taking the full stack web dev course in UJUCODE CODING SCHOOL- Baihata Chariali, PIN: 781366
 
 
 ## 🔗 Links
