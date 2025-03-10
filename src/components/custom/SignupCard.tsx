@@ -14,6 +14,12 @@ export default function SignupCard({ isLoading, state, action }: SignupCardProps
             <form action={action}>
                 <Card>
                     <CardContent className="space-y-2">
+                    <div className="space-y-1">
+                            <Label htmlFor="name">Name</Label>
+                            <Input readOnly={isLoading} defaultValue={state?.name} name="name" id="name" type="text" placeholder="Enter your name" autoComplete="off" />
+                            {state?.nameErrorMessage && <span className="text-xs text-red-500">{state.nameErrorMessage}</span>}
+                        </div>
+
                         <div className="space-y-1">
                             <Label htmlFor="email">Email</Label>
                             <Input readOnly={isLoading} defaultValue={state?.email} name="email" id="email" type="email" placeholder="Enter your email" autoComplete="off" />
