@@ -3,8 +3,7 @@
 import { ZodError } from "zod";
 import { createClient } from "@/utils/supabase/server";
 import { loginSchema, signupSchema } from "@/utils/zod/account.schema";
-import { AuthError, Session, User } from "@supabase/supabase-js";
-import { revalidatePath } from "next/cache";
+import { AuthError, Provider, Session, User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 
@@ -29,8 +28,6 @@ export async function loginAction(state: FormState | undefined, formData: FormDa
         const supabase = await createClient();
         const { data: { session, user }, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw new AuthError(error.message, error.status);
-        revalidatePath("/", 'layout');
-        redirect('/dashboard');
     } catch (error) {
         if (error instanceof ZodError) {
             const errors = error.flatten().fieldErrors;
@@ -40,6 +37,8 @@ export async function loginAction(state: FormState | undefined, formData: FormDa
         }
         else if (error instanceof AuthError) return ({ statusText: 'supabaseerror', email, message: error.message });
     }
+
+    redirect("/dashboard");
 }
 
 export async function signupAction(state: FormState | undefined, formData: FormData): Promise<FormState | undefined> {
@@ -51,9 +50,7 @@ export async function signupAction(state: FormState | undefined, formData: FormD
         const supabase = await createClient();
         const { data: { user }, error } = await supabase.auth.signUp({ email, password, options: { data: { name: name } } });
         if (error) throw new AuthError(error.message, error.status);
-        else {
-            return ({ statusText: 'success', user, message: "Signup successful" });
-        };
+        else return ({ statusText: 'success', user, message: "Signup successful" });
     } catch (error) {
         if (error instanceof ZodError) {
             const errors = error.flatten().fieldErrors;
@@ -66,7 +63,7 @@ export async function signupAction(state: FormState | undefined, formData: FormD
     }
 }
 
-export async function signInWithProvider(provider: any) {
+export const signInWithProvider = async (provider: Provider) => {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -82,6 +79,5 @@ export async function logoutAction() {
     const supabase = await createClient();
     const { error } = await supabase.auth.signOut();
     if (error) throw new AuthError(error.message, error.status);
-    revalidatePath("/", 'layout');
     redirect("/?isLoginPage=true");
 }

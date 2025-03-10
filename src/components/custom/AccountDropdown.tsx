@@ -10,14 +10,15 @@ import Image from "next/image";
 export default function AccountDropdown({ user }: { user: User }) {
     const initials = user?.user_metadata?.name?.split(' ')[0].charAt(0);
     const avatar = user?.user_metadata?.avatar_url;
-
+    console.log(1 + 2);
+    
     const buttonStyle = { cursor: 'pointer', borderRadius: '50%', width: '40px', height: '40px' };
     return (
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     {
-                        avatar ? <Image src={avatar} alt="Profile picture" width={40} height={40} style={{ borderRadius: '50%' }} />
+                        avatar ? <Image src={avatar} alt="Profile picture" width={36} height={30} style={{ borderRadius: '50%' }} />
                                : <Button variant={'outline'} style={buttonStyle}>{initials}</Button>
                     }
                 </DropdownMenuTrigger>
