@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { motion } from "motion/react";
 interface SignupCardProps {
     isLoading: boolean,
     state: any,
@@ -9,16 +10,17 @@ interface SignupCardProps {
 }
 
 export default function SignupCard({ isLoading, state, action }: SignupCardProps) {
+    const MotionCard = motion.create(Card);
     return (
         <>
             <form action={action}>
-                <Card>
+                <MotionCard layout initial={{ y: "50%" }} animate={{ y: 0 }} transition={{ duration: 0.2}}>
                     <CardContent className="space-y-2">
-                    <div className="space-y-1">
+                        <motion.div className="space-y-1">
                             <Label htmlFor="name">Name</Label>
                             <Input readOnly={isLoading} defaultValue={state?.name} name="name" id="name" type="text" placeholder="Enter your name" autoComplete="off" />
                             {state?.nameErrorMessage && <span className="text-xs text-red-500">{state.nameErrorMessage}</span>}
-                        </div>
+                        </motion.div>
 
                         <div className="space-y-1">
                             <Label htmlFor="email">Email</Label>
@@ -34,7 +36,7 @@ export default function SignupCard({ isLoading, state, action }: SignupCardProps
                     <CardFooter className="justify-end">
                         <Button disabled={isLoading} style={{ cursor: 'pointer' }} type="submit" className="mt-3 justify-end">Signup</Button>
                     </CardFooter>
-                </Card>
+                </MotionCard>
             </form>
 
         </>

@@ -24,14 +24,12 @@ export function AccountDialog() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const open = searchParams.get('isLoginPage') == "true";
-
     useEffect(() => {
         if (loginState?.statusText == "success") toast.success("Success", { description: loginState.message });
         else if (signupState?.statusText == "success") toast.success("Success", { description: signupState.message })
         else if (loginState?.statusText == "supabaseerror") toast.error("Error", { description: loginState.message })
         else if (signupState?.statusText == "supabaseerror") toast.error("Error", { description: signupState.message })
     }, [loginState?.statusText, signupState?.statusText]);
-
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && router.push('/')}>
             <DialogTrigger asChild>
@@ -45,8 +43,12 @@ export function AccountDialog() {
                 <Separator />
                 <Tabs defaultValue={tab} onValueChange={(value) => setTab(value)}>
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="login">Login</TabsTrigger>
-                        <TabsTrigger value="signup">Signup</TabsTrigger>
+                        <TabsTrigger value="login">
+                            Login
+                        </TabsTrigger>
+                        <TabsTrigger value="signup">
+                            Signup
+                        </TabsTrigger>
                     </TabsList>
                     <TabsContent value="login">
                         <LoginCard isLoading={isLoadingForLogin} state={loginState} action={loginAction} />

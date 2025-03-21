@@ -1,0 +1,15 @@
+.link {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0.3rem;
+  align-items: center;
+}
+
+.link:hover{
+
+}
+
+.active{
+  background-color: #333;
+  color: #fff;
+}

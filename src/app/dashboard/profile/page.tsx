@@ -1,27 +1,20 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import Link from "next/link"
+import BreadCrumbComp, { BreadCrumbItem } from "@/components/custom/BreadCrumbComp"
 
 export default function ProfilePage() {
+  const breadcrumbs: BreadCrumbItem[] = [
+    {
+      label: "Dashboard",
+      url: "/dashboard"
+    },
+    {
+      label: "Profile",
+    }
+  ]
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href={'/dashboard'}>Dashboard</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Profile</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <>
+      <BreadCrumbComp breadcrumbs={breadcrumbs} />
+      <div>Profile</div>
+      
+    </>
   )
 }

@@ -1,27 +1,16 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import Link from "next/link"
-
+import BreadCrumbComp, { BreadCrumbItem } from "@/components/custom/BreadCrumbComp";
 export default function NotificationsPage() {
+  const breadcrumbs: BreadCrumbItem[] = [
+    {
+      label: "Dashboard",
+      url: "/dashboard"
+    },
+    {
+      label: "Notifications",
+    }
+  ]
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href={'/dashboard'}>Dashboard</Link>
-          </BreadcrumbLink>        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Notifications</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <BreadCrumbComp breadcrumbs={breadcrumbs} />
   )
 }
 

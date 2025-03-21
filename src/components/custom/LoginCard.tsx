@@ -2,16 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { motion } from "motion/react";
 interface LoginCardProps {
     isLoading: boolean,
     state: any,
     action: (data: FormData) => void
 }
 export default function LoginCard({ isLoading, state, action }: LoginCardProps) {
+    const MotionCard = motion.create(Card);
     return (
         <>
             <form action={action}>
-                <Card>
+                <MotionCard layout initial={{ y: "50%" }} animate={{ y: 0 }} transition={{ duration: 0.2 }}>
                     <CardContent className="space-y-2">
                         <div className="space-y-1">
                             <Label htmlFor="email">Email</Label>
@@ -27,7 +29,7 @@ export default function LoginCard({ isLoading, state, action }: LoginCardProps) 
                     <CardFooter className="justify-end">
                         <Button disabled={isLoading} type="submit" className="mt-3" style={{ cursor: 'pointer' }}>Login</Button>
                     </CardFooter>
-                </Card>
+                </MotionCard>
             </form>
 
         </>

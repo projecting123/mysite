@@ -10,7 +10,6 @@ import Image from "next/image";
 export default function AccountDropdown({ user }: { user: User }) {
     const initials = user?.user_metadata?.name?.split(' ')[0].charAt(0);
     const avatar = user?.user_metadata?.avatar_url;
-    console.log(1 + 2);
     
     const buttonStyle = { cursor: 'pointer', borderRadius: '50%', width: '40px', height: '40px' };
     return (
