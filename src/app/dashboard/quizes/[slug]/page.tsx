@@ -1,10 +1,6 @@
 import BreadCrumbComp, { BreadCrumbItem } from "@/components/custom/BreadCrumbComp";
-import { SearchParams } from "next/dist/server/request/search-params";
-interface Params extends SearchParams {
-  slug: string
-}
-export default async function page({ params }: { params: Params }) {
-  const { slug } = params;
+
+export default async function page() {
   const breadcrumbs: BreadCrumbItem[] = [
     {
       label: "Dashboard",
@@ -15,7 +11,7 @@ export default async function page({ params }: { params: Params }) {
       url: "/dashboard/quizes"
     },
     {
-      label: slug,
+      label: 'Something',
     }
   ]
   return (
