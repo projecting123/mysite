@@ -1,5 +1,6 @@
 import BreadCrumbComp, { BreadCrumbItem } from "@/components/custom/BreadCrumbComp";
-interface Params {
+import { SearchParams } from "next/dist/server/request/search-params";
+interface Params extends SearchParams {
   slug: string
 }
 export default async function page({ params }: { params: Params }) {
