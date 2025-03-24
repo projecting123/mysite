@@ -1,6 +1,6 @@
 'use client';
-import { Container, Flex, Heading, Text } from "@radix-ui/themes"
-import { AnimatePresence, LayoutGroup, motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
+import { Flex, Heading, Text } from "@radix-ui/themes"
+import { AnimatePresence, motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 import React, { useEffect, useRef, useState } from "react";
 
 interface Sections {
@@ -63,17 +63,19 @@ export function FeatureSection() {
     return (
         <>
             <Flex wrap={'wrap'} gap={'8'} mt={'4'} ref={target} className="p-4 h-[90dvh]" style={{ position: 'sticky', top: 20 }} align={'start'}>
-                <Flex direction={'column'}>
+                <Flex direction={{ sm: 'column' }}>
                     {
                         sections.map((section, index) => (
                             <Flex key={index} gap={'2'}>
                                 {section.name == activeSection ?
-                                    <motion.div id='progress-bar' layoutId="progress-bar" transition={{ duration: 0.2 }} className='rounded-md w-[5px] bg-sky-300 shrink-0'>
+                                    <motion.div layout transition={{ duration: 0.2 }} className='rounded-md w-[5px] bg-sky-300 shrink-0'>
                                         <motion.div style={{ height: section.name == 'courses' ? `${progress.coursesProgress}%` : section.name == 'quizes' ? `${progress.quizesProgress}%` : `${progress.notesProgress}%` }} className='w-full bg-sky-700 rounded-md'></motion.div>
                                     </motion.div> : null
                                 }
-                                <MotionFlex direction={'column'} ref={inViewTarget}>
-                                    <MotionHeading layout style={{ marginBlock: section.name == activeSection ? 0 : 4, transition: 'all 0.2s ease' }} className={`${section.name == activeSection ? 'text-primary' : 'text-gray-400'}`}>{section.title}</MotionHeading>
+                                <MotionFlex direction={'column'} ref={inViewTarget} className="my-1">
+                                    <Flex display={{ initial: section.name == activeSection ? 'flex' : 'none', sm: 'flex'}}>
+                                        <MotionHeading transition={{ duration: 0.15 }} layout className={`${section.name == activeSection ? 'text-primary' : 'text-gray-400'}`}>{section.title}</MotionHeading>
+                                    </Flex>
                                     {section.name == activeSection ?
                                         <MotionFlex
                                             gap={'2'}
