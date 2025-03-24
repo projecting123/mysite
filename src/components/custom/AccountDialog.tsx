@@ -39,7 +39,7 @@ export function AccountDialog() {
                 <DialogHeader>
                     <DialogTitle style={{ textAlign: 'center' }}>Authentication Form</DialogTitle>
                 </DialogHeader>
-                <Button onClick={() => signInWithProvider('google')} disabled={isLoadingForLogin || isLoadingForSignup} style={{ cursor: 'pointer' }}><Image src={'/google.svg'} alt="Google Logo" width={28} height={28} /> Sign in with Google</Button>
+                <Button onClick={() => signInWithProvider('google')} disabled={isLoadingForLogin || isLoadingForSignup} style={{ cursor: 'pointer', height: 38 }}><Image src={'/google.svg'} alt="Google Logo" width={28} height={28} /> Sign in with Google</Button>
                 <Separator />
                 <Tabs defaultValue={tab} onValueChange={(value) => setTab(value)}>
                     <TabsList className="grid w-full grid-cols-2">

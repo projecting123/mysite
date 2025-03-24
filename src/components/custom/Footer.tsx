@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 export default function Footer() {
     return (
         <>
-            <footer>
+            <footer className="min-h-screen">
                 <Flex justify={"center"} gap={"4"}>
                     <Flex>
                         <Text>&copy;2021-{new Date().getFullYear()} - All Rights Reserved</Text>
@@ -18,3 +18,5 @@ export default function Footer() {
         </>
     )
 }
+
+// TODO: In future, the present classNames from footer will be deleted.

@@ -14,9 +14,9 @@ export default async function AppShell({ children }: { children: React.ReactNode
         <>
             <Flex direction={"column"} p={"4"}>
                 <Header user={null} />
-                <main>
-                    {children}
-                </main>
+                {children}
+                {/* <Footer/> */}
+                <div className="h-[350vh] w-full"></div>
             </Flex>
         </>
     )

@@ -14,7 +14,7 @@ export default function SignupCard({ isLoading, state, action }: SignupCardProps
     return (
         <>
             <form action={action}>
-                <MotionCard layout initial={{ y: "50%" }} animate={{ y: 0 }} transition={{ duration: 0.2}}>
+                <MotionCard layout initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ duration: 0.2}}>
                     <CardContent className="space-y-2">
                         <motion.div className="space-y-1">
                             <Label htmlFor="name">Name</Label>
