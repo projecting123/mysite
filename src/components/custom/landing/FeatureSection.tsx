@@ -36,20 +36,22 @@ const sections: Sections[] = [
 
 export function FeatureSection() {
     const [activeSection, setActiveSection] = useState<SectionName | undefined>();
-    const target = useRef(null);
+    const target = useRef<HTMLDivElement>(null);
     const inViewTarget = useRef(null);
     const { scrollY } = useScroll({ target });
     const inView = useInView(inViewTarget, { once: true, amount: 'all' });
-    const motionCourseProgress = useTransform(scrollY, [808, 1408], [0, 100]);
-    const motionQuizProgress = useTransform(scrollY, [1408, 2008], [0, 100]);
-    const motionNotesProgress = useTransform(scrollY, [2008, 2608], [0, 100]);
+    const [targetInitialScroll, setTargetInitialScroll] = useState<number>(0);
+    const motionCourseProgress = useTransform(scrollY, [targetInitialScroll, targetInitialScroll + 600], [0, 100]);
+    const motionQuizProgress = useTransform(scrollY, [targetInitialScroll + 600, targetInitialScroll + 1200], [0, 100]);
+    const motionNotesProgress = useTransform(scrollY, [targetInitialScroll + 1200, targetInitialScroll + 1800], [0, 100]);
 
     const [progress, setProgress] = useState({ coursesProgress: 0, quizesProgress: 0, notesProgress: 0 });
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
-        if (latest > 808 && latest < 1408) setActiveSection('courses');
-        else if (latest > 1408 && latest < 2008) setActiveSection('quizes');
-        else if (latest > 2008 && latest < 2608) setActiveSection('notes');
+        const top = targetInitialScroll;
+        if (latest > top && latest < top + 600) setActiveSection('courses');
+        else if (latest > top + 600 && latest < top + 1200) setActiveSection('quizes');
+        else if (latest > top + 1200 && latest < top + 1800) setActiveSection('notes');
     })
 
     useMotionValueEvent(motionCourseProgress, 'change', latest => setProgress({ ...progress, coursesProgress: latest }));
@@ -58,6 +60,7 @@ export function FeatureSection() {
 
     useEffect(() => {
         inView && setActiveSection('courses')
+        setTargetInitialScroll(target.current!.getBoundingClientRect().top + window.scrollY);
     }, []);
 
     return (
