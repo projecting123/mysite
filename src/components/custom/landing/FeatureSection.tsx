@@ -1,6 +1,6 @@
 'use client';
 import { Flex, Heading, Text } from "@radix-ui/themes"
-import { AnimatePresence, motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
+import { AnimatePresence, LayoutGroup, motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 import React, { useEffect, useRef, useState } from "react";
 
 interface Sections {
@@ -37,23 +37,41 @@ const sections: Sections[] = [
 export function FeatureSection() {
     const [activeSection, setActiveSection] = useState<SectionName | undefined>();
     const target = useRef<HTMLDivElement>(null);
+    const isInView = useInView(target, { amount: 'some' });
     const { scrollY } = useScroll({ target });
     const [targetInitialScroll, setTargetInitialScroll] = useState<number>(0);
     const motionCourseProgress = useTransform(scrollY, [targetInitialScroll, targetInitialScroll + 600], [0, 100]);
     const motionQuizProgress = useTransform(scrollY, [targetInitialScroll + 600, targetInitialScroll + 1200], [0, 100]);
     const motionNotesProgress = useTransform(scrollY, [targetInitialScroll + 1200, targetInitialScroll + 1800], [0, 100]);
     const [progress, setProgress] = useState({ coursesProgress: 0, quizesProgress: 0, notesProgress: 0 });
-    
+
     useEffect(() => {
-        setActiveSection('courses')
-        setTargetInitialScroll(target.current!.getBoundingClientRect().top + window.scrollY);
+        const prevScrollY = window.scrollY;
+        scroll({ top: 0 })
+        const offsetTop = target.current?.offsetTop ?? 0;
+        setTargetInitialScroll(offsetTop);
+
+        if (prevScrollY > offsetTop && prevScrollY < offsetTop + 600) {
+            scroll({ top: prevScrollY })
+            setActiveSection('courses');
+        }
+
+        else if (prevScrollY > offsetTop + 600 && prevScrollY < offsetTop + 1200) {
+            scroll({ top: prevScrollY })
+            setActiveSection('quizes');
+        }
+
+        else if (prevScrollY > offsetTop + 1200 && prevScrollY < offsetTop + 1800) {
+            scroll({ top: prevScrollY })
+            setActiveSection('notes');
+        }
     }, []);
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
-        const top = targetInitialScroll;
-        if (latest > top && latest < top + 600) setActiveSection('courses');
-        else if (latest > top + 600 && latest < top + 1200) setActiveSection('quizes');
-        else if (latest > top + 1200 && latest < top + 1800) setActiveSection('notes');
+        if (latest > targetInitialScroll && latest < targetInitialScroll + 600) setActiveSection('courses');
+        else if (latest > targetInitialScroll + 600 && latest < targetInitialScroll + 1200) setActiveSection('quizes');
+        else if (latest > targetInitialScroll + 1200 && latest < targetInitialScroll + 1800) setActiveSection('notes');
+        else setActiveSection('courses')
     })
 
     useMotionValueEvent(motionCourseProgress, 'change', latest => setProgress({ ...progress, coursesProgress: latest }));
@@ -67,32 +85,34 @@ export function FeatureSection() {
                 <Flex direction={{ sm: 'column' }}>
                     {
                         sections.map((section, index) => (
-                            <Flex key={index} gap={'2'}>
-                                {section.name == activeSection ?
-                                    <motion.div layout transition={{ duration: 0.2 }} className='rounded-md w-[5px] bg-sky-300 shrink-0'>
-                                        <motion.div style={{ height: section.name == 'courses' ? `${progress.coursesProgress}%` : section.name == 'quizes' ? `${progress.quizesProgress}%` : `${progress.notesProgress}%` }} className='w-full bg-sky-700 rounded-md'></motion.div>
-                                    </motion.div> : null
-                                }
-                                <MotionFlex direction={'column'} className="my-1">
-                                    <Flex display={{ initial: section.name == activeSection ? 'flex' : 'none', sm: 'flex'}}>
-                                        <MotionHeading transition={{ duration: 0.15 }} layout className={`${section.name == activeSection ? 'text-primary' : 'text-gray-400'}`}>{section.title}</MotionHeading>
-                                    </Flex>
+                            <LayoutGroup key={index}>
+                                <Flex gap={'2'}>
                                     {section.name == activeSection ?
-                                        <MotionFlex
-                                            gap={'2'}
-                                            direction={'column'}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.1 }}>
-                                            <MotionText style={{ lineHeight: 1.1 }}
-                                            >
-                                                {section.description}
-                                            </MotionText>
-                                            <MotionText>Examples: </MotionText>
-                                        </MotionFlex> : null
+                                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} layout transition={{ duration: 0.3 }} className='rounded-md w-[5px] bg-sky-300 shrink-0'>
+                                            <motion.div style={{ height: section.name == 'courses' ? `${progress.coursesProgress}%` : section.name == 'quizes' ? `${progress.quizesProgress}%` : `${progress.notesProgress}%` }} className='w-full bg-sky-700 rounded-md'></motion.div>
+                                        </motion.div> : null
                                     }
-                                </MotionFlex>
-                            </Flex>
+                                    <MotionFlex direction={'column'} className="my-1">
+                                        <Flex display={{ initial: section.name == activeSection ? 'flex' : 'none', sm: 'flex' }}>
+                                            <MotionHeading transition={{ duration: 0.15 }} layout className={`${section.name == activeSection ? 'text-primary' : 'text-gray-400'}`}>{section.title}</MotionHeading>
+                                        </Flex>
+                                        {section.name == activeSection ?
+                                            <MotionFlex
+                                                gap={'2'}
+                                                direction={'column'}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ duration: 0.1 }}>
+                                                <MotionText style={{ lineHeight: 1.1 }}
+                                                >
+                                                    {section.description}
+                                                </MotionText>
+                                                <MotionText>Examples: </MotionText>
+                                            </MotionFlex> : null
+                                        }
+                                    </MotionFlex>
+                                </Flex>
+                            </LayoutGroup>
                         ))
                     }
                 </Flex>
