@@ -37,15 +37,17 @@ const sections: Sections[] = [
 export function FeatureSection() {
     const [activeSection, setActiveSection] = useState<SectionName | undefined>();
     const target = useRef<HTMLDivElement>(null);
-    const inViewTarget = useRef(null);
     const { scrollY } = useScroll({ target });
-    const inView = useInView(inViewTarget, { once: true, amount: 'all' });
     const [targetInitialScroll, setTargetInitialScroll] = useState<number>(0);
     const motionCourseProgress = useTransform(scrollY, [targetInitialScroll, targetInitialScroll + 600], [0, 100]);
     const motionQuizProgress = useTransform(scrollY, [targetInitialScroll + 600, targetInitialScroll + 1200], [0, 100]);
     const motionNotesProgress = useTransform(scrollY, [targetInitialScroll + 1200, targetInitialScroll + 1800], [0, 100]);
-
     const [progress, setProgress] = useState({ coursesProgress: 0, quizesProgress: 0, notesProgress: 0 });
+    
+    useEffect(() => {
+        setActiveSection('courses')
+        setTargetInitialScroll(target.current!.getBoundingClientRect().top + window.scrollY);
+    }, []);
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
         const top = targetInitialScroll;
@@ -58,10 +60,6 @@ export function FeatureSection() {
     useMotionValueEvent(motionQuizProgress, 'change', latest => setProgress({ ...progress, quizesProgress: latest }));
     useMotionValueEvent(motionNotesProgress, 'change', latest => setProgress({ ...progress, notesProgress: latest }));
 
-    useEffect(() => {
-        inView && setActiveSection('courses')
-        setTargetInitialScroll(target.current!.getBoundingClientRect().top + window.scrollY);
-    }, []);
 
     return (
         <>
@@ -75,7 +73,7 @@ export function FeatureSection() {
                                         <motion.div style={{ height: section.name == 'courses' ? `${progress.coursesProgress}%` : section.name == 'quizes' ? `${progress.quizesProgress}%` : `${progress.notesProgress}%` }} className='w-full bg-sky-700 rounded-md'></motion.div>
                                     </motion.div> : null
                                 }
-                                <MotionFlex direction={'column'} ref={inViewTarget} className="my-1">
+                                <MotionFlex direction={'column'} className="my-1">
                                     <Flex display={{ initial: section.name == activeSection ? 'flex' : 'none', sm: 'flex'}}>
                                         <MotionHeading transition={{ duration: 0.15 }} layout className={`${section.name == activeSection ? 'text-primary' : 'text-gray-400'}`}>{section.title}</MotionHeading>
                                     </Flex>
