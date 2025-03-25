@@ -1,12 +1,15 @@
 'use client';
+import { Badge } from "@/components/ui/badge";
 import { Flex, Heading, Text } from "@radix-ui/themes"
-import { AnimatePresence, LayoutGroup, motion, useInView, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
+import { BookType, Calculator } from "lucide-react";
+import { AnimatePresence, LayoutGroup, motion, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 import React, { useEffect, useRef, useState } from "react";
 
 interface Sections {
     title: string,
     name: SectionName,
-    description: string
+    description: string,
+    subDescription: () => React.ReactElement
 }
 
 type SectionName = 'courses' | 'quizes' | 'notes';
@@ -18,26 +21,40 @@ const sections: Sections[] = [
     {
         title: 'Courses',
         name: 'courses',
-        description: 'Our courses is made for everyone with fun and enjoyable.'
+        description: 'Our courses is made for everyone with fun and enjoyable.',
+        subDescription: () => (
+            <>
+                Examples: <Badge variant={'outline'}><BookType />SCERT Maths (VI-X)</Badge> <Badge variant={'outline'}><Calculator />Calculations</Badge> etc.
+            </>
+        )
     },
 
     {
         title: 'Daily Quizes',
         name: 'quizes',
-        description: 'Test your knowledge with our daily quiz sessions.'
+        description: 'Test your knowledge and earn points with our daily quiz sessions.',
+        subDescription: () => (
+            <>
+                Quizes on: <Badge variant={'outline'}><BookType />English Grammar</Badge> <Badge variant={'outline'}><Calculator />Calculations</Badge> etc.
+            </>
+        ),
     },
 
     {
         title: 'PDF Notes',
         name: 'notes',
-        description: 'Download notes for a specific course anytime and anywhere.'
+        description: 'Download notes for a specific course anytime and anywhere.',
+        subDescription: () => (
+            <>
+                Notes on: <Badge variant={'outline'}><BookType />English Grammar</Badge> <Badge variant={'outline'}><Calculator />Calculations</Badge> etc.
+            </>
+        )
     }
 ]
 
 export function FeatureSection() {
     const [activeSection, setActiveSection] = useState<SectionName | undefined>();
     const target = useRef<HTMLDivElement>(null);
-    const isInView = useInView(target, { amount: 'some' });
     const { scrollY } = useScroll({ target });
     const [targetInitialScroll, setTargetInitialScroll] = useState<number>(0);
     const motionCourseProgress = useTransform(scrollY, [targetInitialScroll, targetInitialScroll + 600], [0, 100]);
@@ -51,20 +68,11 @@ export function FeatureSection() {
         const offsetTop = target.current?.offsetTop ?? 0;
         setTargetInitialScroll(offsetTop);
 
-        if (prevScrollY > offsetTop && prevScrollY < offsetTop + 600) {
-            scroll({ top: prevScrollY })
-            setActiveSection('courses');
-        }
+        if (prevScrollY > offsetTop && prevScrollY < offsetTop + 600) setActiveSection('courses');
+        else if (prevScrollY > offsetTop + 600 && prevScrollY < offsetTop + 1200) setActiveSection('quizes');
+        else if (prevScrollY > offsetTop + 1200 && prevScrollY < offsetTop + 1800) setActiveSection('notes');
 
-        else if (prevScrollY > offsetTop + 600 && prevScrollY < offsetTop + 1200) {
-            scroll({ top: prevScrollY })
-            setActiveSection('quizes');
-        }
-
-        else if (prevScrollY > offsetTop + 1200 && prevScrollY < offsetTop + 1800) {
-            scroll({ top: prevScrollY })
-            setActiveSection('notes');
-        }
+        scroll({ top: prevScrollY })
     }, []);
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -81,20 +89,20 @@ export function FeatureSection() {
 
     return (
         <>
-            <Flex wrap={'wrap'} gap={'8'} mt={'4'} ref={target} className="p-4 h-[90dvh]" style={{ position: 'sticky', top: 20 }} align={'start'}>
-                <Flex direction={{ sm: 'column' }}>
+            <Flex wrap={'wrap'} justify={'center'} gap={'140px'} mt={'4'} ref={target} className="p-4 h-[90dvh]" style={{ position: 'sticky', top: 20 }} align={'start'}>
+                <Flex direction={{ sm: 'column' }} width={'450px'}>
                     {
                         sections.map((section, index) => (
                             <LayoutGroup key={index}>
                                 <Flex gap={'2'}>
                                     {section.name == activeSection ?
-                                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} layout transition={{ duration: 0.3 }} className='rounded-md w-[5px] bg-sky-300 shrink-0'>
+                                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} layout transition={{ duration: 0.4 }} className='rounded-md w-[5px] bg-sky-300 shrink-0'>
                                             <motion.div style={{ height: section.name == 'courses' ? `${progress.coursesProgress}%` : section.name == 'quizes' ? `${progress.quizesProgress}%` : `${progress.notesProgress}%` }} className='w-full bg-sky-700 rounded-md'></motion.div>
                                         </motion.div> : null
                                     }
                                     <MotionFlex direction={'column'} className="my-1">
                                         <Flex display={{ initial: section.name == activeSection ? 'flex' : 'none', sm: 'flex' }}>
-                                            <MotionHeading transition={{ duration: 0.15 }} layout className={`${section.name == activeSection ? 'text-primary' : 'text-gray-400'}`}>{section.title}</MotionHeading>
+                                            <MotionHeading size={'7'} transition={{ duration: 0.2 }} layout className={`${section.name == activeSection ? 'text-primary' : 'text-gray-400'}`}>{section.title}</MotionHeading>
                                         </Flex>
                                         {section.name == activeSection ?
                                             <MotionFlex
@@ -102,12 +110,21 @@ export function FeatureSection() {
                                                 direction={'column'}
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.1 }}>
+                                                transition={{ duration: 0.2 }}>
                                                 <MotionText style={{ lineHeight: 1.1 }}
                                                 >
                                                     {section.description}
                                                 </MotionText>
-                                                <MotionText>Examples: </MotionText>
+                                                <MotionFlex
+                                                    gap={{ initial: '1', sm: '2' }}
+                                                    align={'center'}
+                                                    initial={{ opacity: 0, y: -20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                    className="text-sm text-muted-foreground"
+                                                >
+                                                    {section.subDescription()}
+                                                </MotionFlex>
                                             </MotionFlex> : null
                                         }
                                     </MotionFlex>
@@ -117,7 +134,7 @@ export function FeatureSection() {
                     }
                 </Flex>
 
-                <Flex>
+                <Flex width={'450px'} className="border-2 border-sky-300">
                     <AnimatePresence>
                         {
                             sections.map((section, index) => (
@@ -126,7 +143,7 @@ export function FeatureSection() {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                 >
-                                    <Heading>{section.title}</Heading>
+                                    <Heading>Hello</Heading>
                                 </MotionFlex>
                             ))
                         }
