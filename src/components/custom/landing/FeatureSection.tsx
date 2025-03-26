@@ -67,19 +67,19 @@ export function FeatureSection() {
         scroll({ top: 0 })
         const offsetTop = target.current?.offsetTop ?? 0;
         setTargetInitialScroll(offsetTop);
-
         if (prevScrollY > offsetTop && prevScrollY < offsetTop + 600) setActiveSection('courses');
         else if (prevScrollY > offsetTop + 600 && prevScrollY < offsetTop + 1200) setActiveSection('quizes');
         else if (prevScrollY > offsetTop + 1200 && prevScrollY < offsetTop + 1800) setActiveSection('notes');
-
         scroll({ top: prevScrollY })
+        console.log(target.current?.getBoundingClientRect().height)
     }, []);
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
-        if (latest > targetInitialScroll && latest < targetInitialScroll + 600) setActiveSection('courses');
+        if(latest < targetInitialScroll) setActiveSection('courses')
+        else if (latest > targetInitialScroll && latest < targetInitialScroll + 600) setActiveSection('courses');
         else if (latest > targetInitialScroll + 600 && latest < targetInitialScroll + 1200) setActiveSection('quizes');
         else if (latest > targetInitialScroll + 1200 && latest < targetInitialScroll + 1800) setActiveSection('notes');
-        else setActiveSection('courses')
+        else setActiveSection('notes')
     })
 
     useMotionValueEvent(motionCourseProgress, 'change', latest => setProgress({ ...progress, coursesProgress: latest }));
@@ -88,8 +88,8 @@ export function FeatureSection() {
 
 
     return (
-        <>
-            <Flex wrap={'wrap'} justify={'center'} gap={'140px'} mt={'4'} ref={target} className="p-4 h-[90dvh]" style={{ position: 'sticky', top: 20 }} align={'start'}>
+        <Flex align={'start'} height={'2150px'} justify={'center'}>
+            <Flex wrap={'wrap'} justify={'center'} gap={'140px'} mt={'4'} ref={target} className="p-4" style={{ position: 'sticky', top: 20 }} align={'start'}>
                 <Flex direction={{ sm: 'column' }} width={'450px'}>
                     {
                         sections.map((section, index) => (
@@ -150,6 +150,6 @@ export function FeatureSection() {
                     </AnimatePresence>
                 </Flex>
             </Flex>
-        </>
+        </Flex>
     )
 }
