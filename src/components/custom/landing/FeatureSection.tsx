@@ -1,6 +1,6 @@
 'use client';
 import { Badge } from "@/components/ui/badge";
-import { Flex, Heading, Text } from "@radix-ui/themes"
+import { Container, Flex, Heading, Text } from "@radix-ui/themes"
 import { BookType, Calculator } from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 import React, { useEffect, useRef, useState } from "react";
@@ -71,7 +71,6 @@ export function FeatureSection() {
         else if (prevScrollY > offsetTop + 600 && prevScrollY < offsetTop + 1200) setActiveSection('quizes');
         else if (prevScrollY > offsetTop + 1200 && prevScrollY < offsetTop + 1800) setActiveSection('notes');
         scroll({ top: prevScrollY })
-        console.log(target.current?.getBoundingClientRect().height)
     }, []);
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -88,7 +87,7 @@ export function FeatureSection() {
 
 
     return (
-        <Flex align={'start'} height={'2150px'} justify={'center'}>
+        <Container height={'2150px'}>
             <Flex wrap={'wrap'} justify={'center'} gap={'140px'} mt={'4'} ref={target} className="p-4" style={{ position: 'sticky', top: 20 }} align={'start'}>
                 <Flex direction={{ sm: 'column' }} width={'450px'}>
                     {
@@ -150,6 +149,6 @@ export function FeatureSection() {
                     </AnimatePresence>
                 </Flex>
             </Flex>
-        </Flex>
+        </Container>
     )
 }
