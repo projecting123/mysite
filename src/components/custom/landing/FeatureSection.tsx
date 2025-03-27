@@ -24,7 +24,7 @@ const sections: Sections[] = [
         description: 'Our courses is made for everyone with fun and enjoyable.',
         subDescription: () => (
             <>
-                Examples: <Badge variant={'outline'}><BookType />SCERT Maths (VI-X)</Badge> <Badge variant={'outline'}><Calculator />Calculations</Badge> etc.
+                Courses: <Badge variant={'outline'}><BookType />SCERT Maths (VI-X)</Badge> <Badge variant={'outline'}><Calculator />Calculations</Badge> etc.
             </>
         )
     },
