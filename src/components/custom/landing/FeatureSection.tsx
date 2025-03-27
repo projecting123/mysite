@@ -74,7 +74,7 @@ export function FeatureSection() {
     }, []);
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
-        if(latest < targetInitialScroll) setActiveSection('courses')
+        if (latest < targetInitialScroll) setActiveSection('courses')
         else if (latest > targetInitialScroll && latest < targetInitialScroll + 600) setActiveSection('courses');
         else if (latest > targetInitialScroll + 600 && latest < targetInitialScroll + 1200) setActiveSection('quizes');
         else if (latest > targetInitialScroll + 1200 && latest < targetInitialScroll + 1800) setActiveSection('notes');
@@ -115,6 +115,7 @@ export function FeatureSection() {
                                                     {section.description}
                                                 </MotionText>
                                                 <MotionFlex
+                                                    wrap={'wrap'}
                                                     gap={{ initial: '1', sm: '2' }}
                                                     align={'center'}
                                                     initial={{ opacity: 0, y: -20 }}
